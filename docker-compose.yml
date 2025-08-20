@@ -1,14 +1,43 @@
-version: "3.9"
-
 services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+      - ./scripts/init-ollama.sh:/init-ollama.sh
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
+    entrypoint: ["/bin/bash", "/init-ollama.sh"]
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 5 bash -c 'echo > /dev/tcp/localhost/11434' 2>/dev/null || nc -z localhost 11434 || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 8
+      start_period: 240s
+    restart: unless-stopped
+
   backend:
     build: ./backend
     ports:
       - "8000:8000"
     volumes:
-      - ./backend/app:/app
+      - ./backend/app:/app/app
     environment:
       - PYTHONUNBUFFERED=1
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=tinyllama:1.1b
+    depends_on:
+      ollama:
+        condition: service_healthy
+    healthcheck:
+        test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\" || exit 1"]
+        interval: 15s
+        timeout: 10s
+        retries: 8
+        start_period: 30s
+    restart: unless-stopped
 
   frontend:
     build: ./frontend
@@ -20,4 +49,9 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  ollama_data:

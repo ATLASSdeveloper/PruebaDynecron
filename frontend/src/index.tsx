@@ -1,18 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
 
-const App = () => {
-  const [message, setMessage] = React.useState("");
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+);
 
-  React.useEffect(() => {
-    fetch("/api/hello")
-      .then(res => res.json())
-      .then(data => setMessage(data.message))
-      .catch(err => console.error(err));
-  }, []);
-
-  return <h1>{message || "Cargando..."}</h1>;
-};
-
-const root = ReactDOM.createRoot(document.getElementById("root")!);
-root.render(<App />);
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);

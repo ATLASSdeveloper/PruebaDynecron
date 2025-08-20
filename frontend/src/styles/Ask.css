@@ -1,0 +1,117 @@
+@import './variables.css';
+
+.ask {
+  background: var(--white);
+  padding: var(--spacing-8);
+  border-radius: var(--border-radius-xl);
+  box-shadow: var(--shadow-lg);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.ask h2 {
+  color: var(--gray-800);
+  text-align: center;
+  margin-bottom: var(--spacing-6);
+  font-size: var(--font-size-2xl);
+}
+
+.ask-box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-4);
+}
+
+.ask-box textarea {
+  flex: 1;
+  padding: var(--spacing-3);
+  border: 2px solid var(--gray-300);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color var(--transition-normal);
+}
+
+.ask-box textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.ask-box button {
+  background: var(--secondary-color);
+  color: var(--white);
+  border: none;
+  padding: var(--spacing-3) var(--spacing-6);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  align-self: flex-end;
+  transition: all var(--transition-normal);
+}
+
+.ask-box button:hover:not(:disabled) {
+  background: var(--secondary-dark);
+  transform: translateY(-1px);
+}
+
+.ask-box button:disabled {
+  background: var(--gray-400);
+  cursor: not-allowed;
+}
+
+/* Respuesta */
+.answer {
+  margin-top: var(--spacing-6);
+}
+
+.answer h3 {
+  color: var(--gray-800);
+  margin-bottom: var(--spacing-4);
+  font-size: var(--font-size-xl);
+}
+
+.answer-text {
+  background: var(--success-bg);
+  padding: var(--spacing-4);
+  border-radius: var(--border-radius);
+  margin: var(--spacing-4) 0;
+  border-left: 4px solid var(--success-color);
+  line-height: 1.6;
+  color: var(--gray-800);
+}
+
+/* Citas */
+.citations {
+  margin-top: var(--spacing-6);
+}
+
+.citations h4 {
+  color: var(--gray-800);
+  margin-bottom: var(--spacing-3);
+  font-size: var(--font-size-lg);
+}
+
+.citation-item {
+  background: var(--gray-50);
+  padding: var(--spacing-3);
+  margin: var(--spacing-2) 0;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+  color: var(--gray-600);
+  border-left: 3px solid var(--primary-color);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ask {
+    padding: var(--spacing-4);
+  }
+  
+  .ask-box button {
+    align-self: stretch;
+  }
+}

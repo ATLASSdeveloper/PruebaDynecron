@@ -122,6 +122,7 @@ docker-compose up
 
 ### Agregar Documentos
 
+<img src="Fotos Q&A/Agregar Documentos.JPG" alt="Logo" width="300" height="100">
 ![1 (alt text)](Fotos%20Q&A/Agregar%20Documentos.JPG)
 ![2 (alt text)](Fotos%20Q&A/Agregar%20Documentos%20Funcional.JPG)
 

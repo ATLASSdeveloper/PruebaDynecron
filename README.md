@@ -122,17 +122,17 @@ docker-compose up
 
 ### Agregar Documentos
 
-<img src="Fotos Q&A/Agregar Documentos.JPG" alt="Logo" width="300" height="100">
+
 ![1 (alt text)](Fotos%20Q&A/Agregar%20Documentos.JPG)
 ![2 (alt text)](Fotos%20Q&A/Agregar%20Documentos%20Funcional.JPG)
 
 ### Buscar Información
 
-![1 (alt text)](Fotos%20Q&A/Buscar%20Documentos.JPG)
-![2 (alt text)](Fotos%20Q&A/Buscar%20Documentos%20Funcional.JPG)
+![3 (alt text)](Fotos%20Q&A/Buscar%20Documentos.JPG)
+![4 (alt text)](Fotos%20Q&A/Buscar%20Documentos%20Funcional.JPG)
 
 ### Preguntar con LLM
 
-![1 (alt text)](Fotos%20Q&A/Pregunta%20IA.JPG)
-![1 (alt text)](Fotos%20Q&A/Pregunta%20IA%20Funcional%201.JPG)
-![1 (alt text)](Fotos%20Q&A/Pregunta%20IA%20Funcional%202.JPG)
+![5 (alt text)](Fotos%20Q&A/Pregunta%20IA.JPG)
+![6 (alt text)](Fotos%20Q&A/Pregunta%20IA%20Funcional%201.JPG)
+![7 (alt text)](Fotos%20Q&A/Pregunta%20IA%20Funcional%202.JPG)

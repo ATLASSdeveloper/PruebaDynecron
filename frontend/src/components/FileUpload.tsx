@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { apiService } from '../services/api';
-import { FileInfo } from '../types';
+import { FileInfo } from '../types/fileInfo';
+import { useRateLimit } from '../hooks/useRateLimit';
+import RateLimitNotification from './RateLimitNotification';
 
 const FileUpload: React.FC = () => {
   const [files, setFiles] = useState<File[]>([]);
@@ -8,6 +10,8 @@ const FileUpload: React.FC = () => {
   const [message, setMessage] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState<FileInfo[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { rateLimit, resetRateLimit } = useRateLimit();
+  const [error, setError] = useState('');
 
   const onDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -19,13 +23,25 @@ const FileUpload: React.FC = () => {
     if (e.target.files) {
       const selectedFiles = Array.from(e.target.files);
       handleFiles(selectedFiles);
+      e.target.value = '';
     }
   };
 
   const handleFiles = (newFiles: File[]) => {
-    const validFiles = newFiles.filter(file => 
-      file.type === 'text/plain' || file.name.endsWith('.pdf')
-    );
+    if (rateLimit.isLimited) {
+      setError(rateLimit.message);
+      return;
+    }
+    
+    const validFiles = newFiles.filter(file => {
+      const isText = file.type === 'text/plain';
+      const isPDF = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+      return isText || isPDF;
+    });
+    
+    if (validFiles.length < newFiles.length) {
+      setMessage('Algunos archivos no son válidos. Solo se aceptan .txt y .pdf');
+    }
     
     if (validFiles.length < 3) {
       setMessage('Debes seleccionar al menos 3 archivos');
@@ -37,6 +53,7 @@ const FileUpload: React.FC = () => {
       return;
     }
 
+    setError('');
     setFiles(validFiles);
     setMessage('');
   };
@@ -53,16 +70,26 @@ const FileUpload: React.FC = () => {
       return;
     }
 
+    if (rateLimit.isLimited) {
+      setError(rateLimit.message);
+      return;
+    }
+
     setIsUploading(true);
     setMessage('');
+    setError('');
 
     try {
       const result = await apiService.uploadFiles(files);
       setMessage(result.message);
       setUploadedFiles(result.files);
       setFiles([]);
-    } catch (error) {
-      setMessage('Error al subir archivos');
+    } catch (err: any) {
+      if (err.response?.status === 429 || err.message === 'RATE_LIMIT_EXCEEDED') {
+        setError('Límite de solicitudes excedido. Por favor espere.');
+      } else {
+        setError('Error en la búsqueda. Intenta nuevamente.');
+      }
     } finally {
       setIsUploading(false);
     }
@@ -72,8 +99,9 @@ const FileUpload: React.FC = () => {
     const newFiles = [...files];
     newFiles.splice(index, 1);
     setFiles(newFiles);
+    setMessage('');
   };
-
+  
   return (
     <div className="file-upload">
       <h2>📁 Subir Documentos</h2>
@@ -102,17 +130,22 @@ const FileUpload: React.FC = () => {
 
       {files.length > 0 && (
         <div className="file-list">
-          <h3>Archivos seleccionados:</h3>
+          <div className="file-list-header">
+            <h3>Archivos seleccionados: {files.length}</h3>
+          </div>
           <ul>
             {files.map((file, index) => (
-              <li key={index}>
+              <li key={`${file.name}-${index}`}>
                 <span className="file-name">{file.name}</span>
                 <span className="file-size">
                   ({(file.size / 1024).toFixed(1)} KB)
                 </span>
                 <button 
                   className="remove-button"
-                  onClick={() => removeFile(index)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeFile(index);
+                  }}
                   title="Eliminar archivo"
                 >
                   ×
@@ -120,6 +153,18 @@ const FileUpload: React.FC = () => {
               </li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {files.length > 0 && (
+        <div className="upload-actions">
+          <button 
+            onClick={handleUpload} 
+            disabled={isUploading || rateLimit.isLimited}
+            className="upload-button"
+          >
+            {isUploading ? '⏳ Subiendo...' : `🚀 Subir ${files.length} archivos`}
+          </button>
         </div>
       )}
 
@@ -137,21 +182,18 @@ const FileUpload: React.FC = () => {
         </div>
       )}
 
-      {files.length > 0 && (
-        <button 
-          onClick={handleUpload} 
-          disabled={isUploading}
-          className="upload-button"
-        >
-          {isUploading ? '⏳ Subiendo...' : `🚀 Subir ${files.length} archivos`}
-        </button>
-      )}
-
       {message && (
         <div className={`message ${message.includes('Error') ? 'error' : 'success'}`}>
           {message}
         </div>
       )}
+
+      <RateLimitNotification
+              isVisible={rateLimit.isLimited}
+              message={rateLimit.message}
+              retryAfter={rateLimit.retryAfter}
+              onClose={resetRateLimit}
+            />
     </div>
   );
 };

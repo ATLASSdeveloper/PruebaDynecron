@@ -1,0 +1,42 @@
+.rate-limit-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #ffebee;
+  border: 1px solid #f44336;
+  border-radius: 8px;
+  padding: 16px;
+  min-width: 300px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.rate-limit-content h3 {
+  margin: 0 0 8px 0;
+  color: #d32f2f;
+  font-size: 16px;
+}
+
+.rate-limit-content p {
+  margin: 8px 0;
+  color: #333;
+}
+
+.countdown {
+  font-weight: bold;
+  color: #d32f2f;
+}
+
+.close-btn {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.close-btn:hover {
+  background: #b71c1c;
+}

@@ -1,8 +1,9 @@
 import os
 from pathlib import Path
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, File, HTTPException, Request
 from typing import List
 import aiohttp
+from app.limiter import limiter
 from app.models import AskRequest, AskResponse, SearchResult
 from app.services.document_service import DocumentService
 from app.services.llm_service import LLMService
@@ -14,7 +15,8 @@ document_service = DocumentService(os.path.join(BASE_DIR, "data", "content_data.
 llm_service = LLMService()
 
 @router.post("/ingest")
-async def ingest_documents(files: List[UploadFile] = File(...)):
+@limiter.limit("3/minute")
+async def ingest_documents(request: Request,files: List[UploadFile] = File(...)):
     if len(files) < 3 or len(files) > 10:
         raise HTTPException(
             status_code=400, 
@@ -38,7 +40,8 @@ async def ingest_documents(files: List[UploadFile] = File(...)):
     }
 
 @router.get("/search")
-async def search_documents(q: str, limit: int = 5) -> List[SearchResult]:
+@limiter.limit("3/minute")
+async def search_documents(request: Request,q: str, limit: int = 5) -> List[SearchResult]:
     if not q or len(q.strip()) < 2:
         raise HTTPException(
             status_code=400, 
@@ -48,18 +51,19 @@ async def search_documents(q: str, limit: int = 5) -> List[SearchResult]:
     return document_service.search(q.strip(), top_k=limit)
 
 @router.post("/ask")
-async def ask_question(request: AskRequest) -> AskResponse:
-    if not request.question or len(request.question.strip()) < 3:
+@limiter.limit("3/minute")
+async def ask_question(request: Request,ask_request: AskRequest) -> AskResponse:
+    if not ask_request.question or len(ask_request.question.strip()) < 3:
         raise HTTPException(
             status_code=400, 
             detail="Pregunta requerida (mínimo 3 caracteres)"
         )
     
     # Obtiene contenido relevante
-    search_results = document_service.search(request.question, top_k=5)
+    search_results = document_service.search(ask_request.question, top_k=5)
     
     # Respuesta del modelo MLL
-    answer = await llm_service.generate_answer(request.question, search_results)
+    answer = await llm_service.generate_answer(ask_request.question, search_results)
     
     # Preparar citaciones
     citations = []

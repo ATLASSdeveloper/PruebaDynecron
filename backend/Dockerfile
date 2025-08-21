@@ -28,6 +28,10 @@ RUN pip install --no-cache-dir \
     aiofiles==23.2.1
 
 RUN pip install --no-cache-dir \
+    slowapi==0.1.8 \
+    limits==4.8.0
+
+RUN pip install --no-cache-dir \
     python-multipart==0.0.6 \
     python-dotenv==1.0.0 \
     chromadb==0.4.15

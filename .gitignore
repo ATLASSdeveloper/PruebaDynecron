@@ -4,3 +4,4 @@ backend/app/__pycache__/main.cpython-311.pyc
 /backend/app/infrastructure/__pycache__
 /backend/app/services/__pycache__
 /backend/app/__pycache__
+backend/app/data/content_data.json

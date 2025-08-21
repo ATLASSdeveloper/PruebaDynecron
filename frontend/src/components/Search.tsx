@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
 import { apiService } from '../services/api';
-import { SearchResult } from '../types';
+import { SearchResult } from '../types/searchResult';
+import { useRateLimit } from '../hooks/useRateLimit';
+import RateLimitNotification from './RateLimitNotification';
 
 const Search: React.FC = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
-  const [error, setError] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
+  const [error, setError] = useState('');
+  const { rateLimit, resetRateLimit } = useRateLimit();
 
   const handleSearch = async () => {
     if (!query.trim()) {
       setError('Por favor ingresa un término de búsqueda');
       setHasSearched(false);
+      return;
+    }
+
+    if (rateLimit.isLimited) {
+      setError(rateLimit.message);
       return;
     }
 
@@ -24,15 +32,19 @@ const Search: React.FC = () => {
     try {
       const searchResults = await apiService.search(query);
       setResults(searchResults);
-    } catch (error) {
-      setError('Error en la búsqueda. Intenta nuevamente.');
+    } catch (error: any) {
+      if (error.message === 'RATE_LIMIT_EXCEEDED') {
+        setError('Límite de solicitudes excedido. Por favor espere.');
+      } else {
+        setError('Error en la búsqueda. Intenta nuevamente.');
+      }
     } finally {
       setIsSearching(false);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !rateLimit.isLimited) {
       handleSearch();
     }
   };
@@ -43,6 +55,7 @@ const Search: React.FC = () => {
       setHasSearched(false);
       setResults([]);
     }
+    if (error) setError('');
   };
 
   return (
@@ -56,17 +69,19 @@ const Search: React.FC = () => {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           placeholder="Escribe tu búsqueda..."
-          disabled={isSearching}
+          disabled={isSearching || rateLimit.isLimited}
+          className={rateLimit.isLimited ? 'disabled-input' : ''}
         />
         <button 
           onClick={handleSearch} 
-          disabled={isSearching}
+          disabled={isSearching || rateLimit.isLimited}
+          className={rateLimit.isLimited ? 'disabled-button' : ''}
         >
           {isSearching ? 'Buscando...' : 'Buscar'}
         </button>
       </div>
 
-      {error && <div className="error">{error}</div>}
+      {error && <div className="error-message">{error}</div>}
 
       {results.length > 0 ? (
         <div className="results">
@@ -81,7 +96,7 @@ const Search: React.FC = () => {
           ))}
         </div>
       ) : (
-        hasSearched && !isSearching && query && (
+        hasSearched && !isSearching && query && !rateLimit.isLimited && (
           <div className="no-results">
             <p>No se encontraron resultados para "{query}"</p>
           </div>
@@ -89,8 +104,17 @@ const Search: React.FC = () => {
       )}
 
       {isSearching && (
-        <div className="loading">Buscando...</div>
+        <div className="loading">
+          <p>Buscando...</p>
+        </div>
       )}
+
+      <RateLimitNotification
+        isVisible={rateLimit.isLimited}
+        message={rateLimit.message}
+        retryAfter={rateLimit.retryAfter}
+        onClose={resetRateLimit}
+      />
     </div>
   );
 };

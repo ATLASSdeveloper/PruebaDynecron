@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { apiService } from '../services/api';
-import { AskResponse } from '../types';
+import { AskResponse } from '../types/askResponse';
 
 const Ask: React.FC = () => {
   const [question, setQuestion] = useState('');

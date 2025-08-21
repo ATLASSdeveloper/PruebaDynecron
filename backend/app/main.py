@@ -4,7 +4,6 @@ from app.api.endpoints import router as api_router
 
 app = FastAPI(title="Document Search API", version="1.0.0")
 
-# Configurar CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "http://frontend:3000"],

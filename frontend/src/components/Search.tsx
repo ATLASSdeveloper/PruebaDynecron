@@ -81,7 +81,6 @@ const Search: React.FC = () => {
           ))}
         </div>
       ) : (
-        // Solo mostrar "no results" si ya se hizo una búsqueda
         hasSearched && !isSearching && query && (
           <div className="no-results">
             <p>No se encontraron resultados para "{query}"</p>

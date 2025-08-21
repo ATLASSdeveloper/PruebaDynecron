@@ -7,7 +7,6 @@ from app.services.llm_service import LLMService
 
 router = APIRouter()
 
-# Inicializar servicios
 document_service = DocumentService()
 llm_service = LLMService()
 
@@ -53,18 +52,16 @@ async def ask_question(request: AskRequest) -> AskResponse:
             detail="Pregunta requerida (mínimo 3 caracteres)"
         )
     
-    # Primero buscar contenido relevante
+    # Obtiene contenido relevante
     search_results = document_service.search(request.question, top_k=5)
     
-    # Generar respuesta con LLM
+    # Respuesta del modelo MLL
     answer = await llm_service.generate_answer(request.question, search_results)
     
     # Preparar citaciones
     citations = []
     if search_results:
-        # Usar los resultados más relevantes como citaciones
         for result in search_results[:3]:
-            # Acortar el texto para la citación
             text_preview = result.text
             if len(text_preview) > 150:
                 text_preview = text_preview[:147] + "..."

@@ -87,14 +87,6 @@ const FileUpload: React.FC = () => {
         <div className="drop-zone-content">
           <div className="upload-icon">📂</div>
           <p>Arrastra y suelta archivos aquí</p>
-          <p className="or-text">o</p>
-          <button 
-            type="button" 
-            className="browse-button"
-            onClick={(e) => e.stopPropagation()}
-          >
-            Examinar archivos
-          </button>
           <p className="file-requirements">(3-10 archivos .txt o .pdf)</p>
         </div>
         

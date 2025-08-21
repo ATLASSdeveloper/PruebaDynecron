@@ -8,19 +8,18 @@ class LLMService:
     def __init__(self):
         self.base_url = os.getenv("OLLAMA_BASE_URL", "http://ollama:11434")
         self.model = os.getenv("OLLAMA_MODEL", "tinyllama:1.1b")
-        self.timeout = aiohttp.ClientTimeout(total=500)  # Reducido a 30 segundos
+        self.timeout = aiohttp.ClientTimeout(total=500)
 
+    #promp simple por limitaciones del modelo a usar
     async def generate_answer(self, question: str, context: List[SearchResult]) -> str:
         if not context:
             return "No encuentro esa información en los documentos cargados"
         
-        # OPTIMIZACIÓN: Contexto MUY breve para TinyLlama
         context_text = "\n".join([
             f"[{result.document_name}]: {result.text[:100]}..." 
-            for result in context[:2]  # Solo los 2 más relevantes
+            for result in context[:2]
         ])
         
-        # OPTIMIZACIÓN: Prompt ultra corto y directo
         prompt = f"""Responde en español basado solo en esta información:
 
 {context_text}
@@ -37,9 +36,9 @@ Respuesta breve:"""
                         "model": self.model,
                         "prompt": prompt,
                         "stream": False,
-                        "options": {
-                            "temperature": 0.1,  # Muy bajo para respuestas precisas
-                            "num_predict": 80,   # Respuestas muy cortas
+                        "options": { #configuración optimizada en respuesta y longitud
+                            "temperature": 0.1,
+                            "num_predict": 80,
                             "top_k": 20,
                             "top_p": 0.9,
                             "repeat_penalty": 1.1

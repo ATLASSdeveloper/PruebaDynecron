@@ -34,11 +34,11 @@
 .search-box input:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 3px rgba(168, 52, 102, 0.1);
 }
 
 .search-box button {
-  background: var(--secondary-color);
+  background: var(--primary-color);
   color: var(--white);
   border: none;
   padding: var(--spacing-3) var(--spacing-6);
@@ -49,13 +49,68 @@
 }
 
 .search-box button:hover:not(:disabled) {
-  background: var(--secondary-dark);
+  background: var(--primary-dark);
   transform: translateY(-1px);
 }
 
 .search-box button:disabled {
   background: var(--gray-400);
   cursor: not-allowed;
+}
+
+/* Estilos para resaltado de texto */
+.highlight {
+  background-color: #ffeb3b;
+  padding: 0.1em 0.2em;
+  border-radius: 0.2em;
+  font-weight: bold;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  color: var(--black);
+}
+
+/* Lista de citas clicables */
+.citations-list {
+  margin-bottom: var(--spacing-6);
+  padding: var(--spacing-4);
+  background: var(--gray-50);
+  border-radius: var(--border-radius-lg);
+  border-left: 4px solid var(--primary-color);
+}
+
+.citations-list h4 {
+  color: var(--gray-800);
+  margin-bottom: var(--spacing-3);
+  font-size: var(--font-size-lg);
+}
+
+.citation-buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  margin-top: var(--spacing-3);
+}
+
+.citation-button {
+  background: var(--white);
+  border: 2px solid var(--gray-300);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  font-size: var(--font-size-sm);
+  color: var(--gray-700);
+}
+
+.citation-button:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.citation-button.active {
+  background: var(--primary-color);
+  color: var(--white);
+  border-color: var(--primary-color);
 }
 
 /* Resultados */
@@ -76,6 +131,18 @@
   border-radius: var(--border-radius);
   border-left: 4px solid var(--primary-color);
   box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.result-item.selected {
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(168, 52, 102, 0.1);
+  transform: translateX(4px);
+}
+
+.result-item:hover {
+  transform: translateX(2px);
+  box-shadow: var(--shadow-md);
 }
 
 .result-header {
@@ -88,6 +155,7 @@
 .document-name {
   font-weight: 600;
   color: var(--gray-800);
+  font-size: var(--font-size-lg);
 }
 
 .score {
@@ -102,6 +170,62 @@
 .result-text {
   color: var(--gray-700);
   line-height: 1.6;
+  margin-bottom: var(--spacing-3);
+  padding: var(--spacing-3);
+  background: var(--white);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--gray-200);
+}
+
+/* Botón de copiar */
+.copy-button {
+  background: var(--primary-color);
+  color: var(--white);
+  border: none;
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  transition: background var(--transition-normal);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.copy-button:hover {
+  background: var(--primary-dark);
+}
+
+.copy-button:active {
+  transform: scale(0.98);
+}
+
+/* Animaciones */
+.citation-highlight {
+  animation: pulse-highlight 2s ease-in-out;
+}
+
+@keyframes pulse-highlight {
+  0% { 
+    background-color: transparent; 
+    box-shadow: 0 0 0 0 rgba(168, 52, 102, 0.1);
+  }
+  50% { 
+    background-color: rgba(255, 235, 59, 0.3);
+    box-shadow: 0 0 0 8px rgba(168, 52, 102, 0);
+  }
+  100% { 
+    background-color: transparent;
+    box-shadow: 0 0 0 0 rgba(168, 52, 102, 0);
+  }
+}
+
+/* Estados de carga y mensajes */
+.loading {
+  text-align: center;
+  padding: var(--spacing-6);
+  color: var(--gray-500);
+  font-style: italic;
 }
 
 .no-results {
@@ -109,6 +233,18 @@
   padding: var(--spacing-8);
   color: var(--gray-500);
   font-style: italic;
+  background: var(--gray-100);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--gray-200);
+}
+
+.error {
+  background: var(--error-bg);
+  color: var(--error-color);
+  border: 1px solid var(--error-border);
+  padding: var(--spacing-3);
+  border-radius: var(--border-radius);
+  margin: var(--spacing-4) 0;
 }
 
 /* Responsive */
@@ -125,5 +261,98 @@
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-2);
+  }
+  
+  .citation-buttons-container {
+    flex-direction: column;
+  }
+  
+  .citation-button {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .result-text {
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 480px) {
+  .search h2 {
+    font-size: var(--font-size-xl);
+  }
+  
+  .results h3 {
+    font-size: var(--font-size-lg);
+  }
+  
+  .document-name {
+    font-size: var(--font-size-base);
+  }
+  
+  .result-item {
+    padding: var(--spacing-3);
+  }
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .citation-button,
+  .result-item,
+  .copy-button {
+    transition: none;
+  }
+  
+  .citation-highlight {
+    animation: none;
+  }
+}
+
+/* Focus styles para accesibilidad */
+.citation-button:focus,
+.copy-button:focus,
+.search-box input:focus,
+.search-box button:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Modo oscuro (opcional) */
+@media (prefers-color-scheme: dark) {
+  .search {
+    background: var(--gray-800);
+  }
+  
+  .search h2,
+  .results h3,
+  .document-name {
+    color: var(--white);
+  }
+  
+  .result-item {
+    background: var(--gray-700);
+    border-left-color: var(--primary-light);
+  }
+  
+  .result-text {
+    background: var(--gray-600);
+    color: var(--gray-100);
+    border-color: var(--gray-500);
+  }
+  
+  .citation-button {
+    background: var(--gray-600);
+    color: var(--gray-100);
+    border-color: var(--gray-500);
+  }
+  
+  .citation-button.active {
+    background: var(--primary-color);
+    color: var(--white);
+  }
+  
+  .citations-list {
+    background: var(--gray-700);
   }
 }

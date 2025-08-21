@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List, Dict, Any,Optional
 
 class Document(BaseModel):
     id: str
@@ -10,7 +10,7 @@ class Document(BaseModel):
 class SearchResult(BaseModel):
     text: str
     document_name: str
-    score: float = Field(..., ge=0, le=1)  # Score entre 0 y 1
+    score: float = Field(..., ge=0, le=1)
 
 class AskRequest(BaseModel):
     question: str = Field(..., min_length=3)

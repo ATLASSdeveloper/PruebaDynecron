@@ -1,3 +1,5 @@
+import os
+from pathlib import Path
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from typing import List
 import aiohttp
@@ -7,7 +9,8 @@ from app.services.llm_service import LLMService
 
 router = APIRouter()
 
-document_service = DocumentService()
+BASE_DIR = Path(__file__).resolve().parent.parent
+document_service = DocumentService(os.path.join(BASE_DIR, "data", "content_data.json"))
 llm_service = LLMService()
 
 @router.post("/ingest")

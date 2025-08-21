@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.endpoints import router as api_router
+from app.services.document_service import DocumentService
 
 app = FastAPI(title="Document Search API", version="1.0.0")
 

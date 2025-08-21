@@ -1,10 +1,6 @@
 import React from 'react';
 import Layout from './components/Layout';
-import './styles/App.css';
-import './styles/Layout.css';
-import './styles/FileUpload.css';
-import './styles/Search.css';
-import './styles/Ask.css';
+import './styles/all.css';
 
 const App: React.FC = () => {
   return (

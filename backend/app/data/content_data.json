@@ -1,0 +1,48 @@
+{
+  "documents": {
+    "ec721592-94a5-4208-ac5b-bc5f77136f61": {
+      "id": "ec721592-94a5-4208-ac5b-bc5f77136f61",
+      "name": "habilidades_sebastian_ilbay.txt",
+      "content": "HABILIDADES TÉCNICAS DE SEBASTIÁN ILBAY:\r\n- Frontend: React, Vue, Angular, HTML5, CSS3\r\n- Backend: Node.js, Python, FastAPI, Express\r\n- Bases de datos: MongoDB, PostgreSQL, MySQL\r\n- DevOps: Docker, AWS, Azure, CI/CD\r\n- Herramientas: Git, Jest, Webpack, Figma",
+      "chunks": [
+        "HABILIDADES TÉCNICAS DE SEBASTIÁN ILBAY:\r\n- Frontend: React, Vue, Angular, HTML5, CSS3\r\n- Backend: Node.js, Python, FastAPI, Express\r\n- Bases de datos: MongoDB, PostgreSQL, MySQL\r\n- DevOps: Docker, AWS, Azure, CI/CD\r\n- Herramientas: Git, Jest, Webpack, Figma"
+      ]
+    },
+    "215e9909-0981-49ca-a39b-dcb42b6dd34e": {
+      "id": "215e9909-0981-49ca-a39b-dcb42b6dd34e",
+      "name": "sebastian_ilbay.txt",
+      "content": "Sebastián Ilbay Rodríguez es un ingeniero de software ecuatoriano. \r\nTrabaja como Desarrollador Full Stack con experiencia en React, Node.js y Python.\r\nContacto: +593 958873429 | sebastianIlbayR@outlook.com\r\nPortafolio: https://web-portfolio-lilac.vercel.app/",
+      "chunks": [
+        "Sebastián Ilbay Rodríguez es un ingeniero de software ecuatoriano. \r\nTrabaja como Desarrollador Full Stack con experiencia en React, Node.js y Python.\r\nContacto: +593 958873429 | sebastianIlbayR@outlook.com\r\nPortafolio: https://web-portfolio-lilac.vercel.app/"
+      ]
+    },
+    "d5b258c5-e4ca-4c44-a9c1-e5b543a3cb8b": {
+      "id": "d5b258c5-e4ca-4c44-a9c1-e5b543a3cb8b",
+      "name": "biografia_sebastian_ilbay.txt",
+      "content": "Sebastián Ilbay se especializa en desarrollo web y aplicaciones cloud. \r\nHa trabajado en proyectos de e-commerce y plataformas educativas.\r\nSu enfoque es crear soluciones tecnológicas escalables y eficientes.\r\nDomina tecnologías como JavaScript, TypeScript, Docker y AWS.",
+      "chunks": [
+        "Sebastián Ilbay se especializa en desarrollo web y aplicaciones cloud. \r\nHa trabajado en proyectos de e-commerce y plataformas educativas.\r\nSu enfoque es crear soluciones tecnológicas escalables y eficientes.\r\nDomina tecnologías como JavaScript, TypeScript, Docker y AWS."
+      ]
+    }
+  },
+  "chunk_index": {
+    "ec721592-94a5-4208-ac5b-bc5f77136f61_0": {
+      "text": "HABILIDADES TÉCNICAS DE SEBASTIÁN ILBAY:\r\n- Frontend: React, Vue, Angular, HTML5, CSS3\r\n- Backend: Node.js, Python, FastAPI, Express\r\n- Bases de datos: MongoDB, PostgreSQL, MySQL\r\n- DevOps: Docker, AWS, Azure, CI/CD\r\n- Herramientas: Git, Jest, Webpack, Figma",
+      "document_name": "habilidades_sebastian_ilbay.txt",
+      "doc_id": "ec721592-94a5-4208-ac5b-bc5f77136f61",
+      "chunk_index": 0
+    },
+    "215e9909-0981-49ca-a39b-dcb42b6dd34e_0": {
+      "text": "Sebastián Ilbay Rodríguez es un ingeniero de software ecuatoriano. \r\nTrabaja como Desarrollador Full Stack con experiencia en React, Node.js y Python.\r\nContacto: +593 958873429 | sebastianIlbayR@outlook.com\r\nPortafolio: https://web-portfolio-lilac.vercel.app/",
+      "document_name": "sebastian_ilbay.txt",
+      "doc_id": "215e9909-0981-49ca-a39b-dcb42b6dd34e",
+      "chunk_index": 0
+    },
+    "d5b258c5-e4ca-4c44-a9c1-e5b543a3cb8b_0": {
+      "text": "Sebastián Ilbay se especializa en desarrollo web y aplicaciones cloud. \r\nHa trabajado en proyectos de e-commerce y plataformas educativas.\r\nSu enfoque es crear soluciones tecnológicas escalables y eficientes.\r\nDomina tecnologías como JavaScript, TypeScript, Docker y AWS.",
+      "document_name": "biografia_sebastian_ilbay.txt",
+      "doc_id": "d5b258c5-e4ca-4c44-a9c1-e5b543a3cb8b",
+      "chunk_index": 0
+    }
+  }
+}

@@ -2,14 +2,14 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Solo dependencias esenciales del sistema
+# Dependencias esenciales del sistema
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
-# Instalar en capas para mejor cache
+# Instalacion en capas
 RUN pip install --no-cache-dir --no-deps \
     torch==2.0.1 \
     torchvision==0.15.2 \
@@ -24,7 +24,8 @@ RUN pip install --no-cache-dir \
 RUN pip install --no-cache-dir \
     pydantic==2.5.0 \
     aiohttp==3.9.3 \
-    requests==2.31.0
+    requests==2.31.0\
+    aiofiles==23.2.1
 
 RUN pip install --no-cache-dir \
     python-multipart==0.0.6 \

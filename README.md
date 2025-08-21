@@ -56,59 +56,59 @@ docker-compose up
 
 ### Elección de Ollama y un modelo local:
 
-    -Decisión: Utilizar Ollama con un modelo de lenguaje local (específicamente el modelo "Tiny") en un contenedor independiente.
+- Decisión: Utilizar Ollama con un modelo de lenguaje local (específicamente el modelo "Tiny") en un contenedor independiente.
 
-    -Justificación: Esta arquitectura garantiza que el modelo esté siempre disponible, sin depender de la latencia o disponibilidad de servicios externos. Se prioriza la autonomía y el control total sobre el entorno de inferencia.
+- Justificación: Esta arquitectura garantiza que el modelo esté siempre disponible, sin depender de la latencia o disponibilidad de servicios externos. Se prioriza la autonomía y el control total sobre el entorno de inferencia.
 
-    -Implicación: Se asume la responsabilidad de mantener la infraestructura y el rendimiento del modelo, a cambio de eliminar costos variables por uso de API y limitaciones de tasa (rate limiting).
+- Implicación: Se asume la responsabilidad de mantener la infraestructura y el rendimiento del modelo, a cambio de eliminar costos variables por uso de API y limitaciones de tasa (rate limiting).
 
 ### Selección del modelo específico "Tiny":
 
-    -Decisión: Emplear la variante de modelo más ligera disponible.
+- Decisión: Emplear la variante de modelo más ligera disponible.
 
-    -Justificación: La elección se basó en la restricción principal de hardware: la necesidad de ejecutarse de manera eficiente en entornos con recursos limitados (dispositivos con 8 GB de RAM o menos) dentro de un contenedor.
+- Justificación: La elección se basó en la restricción principal de hardware: la necesidad de ejecutarse de manera eficiente en entornos con recursos limitados (dispositivos con 8 GB de RAM o menos) dentro de un contenedor.
 
-    -Implicación: Esta decisión conlleva una compensación (trade-off) entre accesibilidad/eficiencia y la potencia/capacidad del modelo.
+- Implicación: Esta decisión conlleva una compensación (trade-off) entre accesibilidad/eficiencia y la potencia/capacidad del modelo.
 
 ### Implementación de Búsqueda en Documentos:
 
-        -Decisión: Implementar una funcionalidad de búsqueda utilizando un procesamiento básico de texto (como coincidencia de palabras clave o términos) en lugar de una solución avanzada con modelos de embeddings, bases de datos vectoriales , etc .
+- Decisión: Implementar una funcionalidad de búsqueda utilizando un procesamiento básico de texto (como coincidencia de palabras clave o términos) en lugar de una solución avanzada con modelos de embeddings, bases de datos vectoriales , etc .
 
-        -Justificación: Esta decisión se tomó para priorizar la simplicidad del desarrollo, reducir la complejidad arquitectónica y minimizar la sobrecarga computacional. El objetivo era obtener una funcionalidad de búsqueda mínima viable (MVP) rápidamente.
+- Justificación: Esta decisión se tomó para priorizar la simplicidad del desarrollo, reducir la complejidad arquitectónica y minimizar la sobrecarga computacional. El objetivo era obtener una funcionalidad de búsqueda mínima viable (MVP) rápidamente.
 
-        -Implicación: La búsqueda será menos inteligente y precisa. No podrá encontrar conceptos o sinónimos relacionados semánticamente, sino solo coincidencias literales de texto.
+- Implicación: La búsqueda será menos inteligente y precisa. No podrá encontrar conceptos o sinónimos relacionados semánticamente, sino solo coincidencias literales de texto.
 
 ## 🚀 Supuestos
 
 ###    Supuesto de Autonomía vs. Calidad:
 
-        -Supuesto: Se asumió que la ventaja de tener un sistema siempre disponible y sin costos operativos variables (autonomía) tendría más peso que la posible pérdida en la calidad de las respuestas en comparación con modelos de API más avanzados (como GPT-4).
+- Supuesto: Se asumió que la ventaja de tener un sistema siempre disponible y sin costos operativos variables (autonomía) tendría más peso que la posible pérdida en la calidad de las respuestas en comparación con modelos de API más avanzados (como GPT-4).
 
-        -Estado: Parcialmente validado. Se logró la autonomía, pero la limitación en la calidad es más significativa de lo previsto.
+- Estado: Parcialmente validado. Se logró la autonomía, pero la limitación en la calidad es más significativa de lo previsto.
 
 ###    Supuesto de Costo Total de Propiedad (TCO):
 
-        -Supuesto: Se consideró que el costo de mantener la infraestructura local (tiempo de desarrollo, administración y energía) sería menor a largo plazo que el costo acumulado de usar APIs de pago por uso para el volumen de peticiones esperado.
+- Supuesto: Se consideró que el costo de mantener la infraestructura local (tiempo de desarrollo, administración y energía) sería menor a largo plazo que el costo acumulado de usar APIs de pago por uso para el volumen de peticiones esperado.
 
-        -Estado: Validado para el escenario actual. Dado el bajo volumen o uso experimental, el costo local es efectivamente menor.
+- Estado: Validado para el escenario actual. Dado el bajo volumen o uso experimental, el costo local es efectivamente menor.
 
 ###    Supuesto de Hardware Mínimo:
 
-        -Supuesto: Se dio por hecho que el hardware base del objetivo (dispositivos con 8 GB de RAM) sería suficiente para ejecutar el modelo Tiny y la aplicación simultáneamente con un rendimiento aceptable para el usuario.
+- Supuesto: Se dio por hecho que el hardware base del objetivo (dispositivos con 8 GB de RAM) sería suficiente para ejecutar el modelo Tiny y la aplicación simultáneamente con un rendimiento aceptable para el usuario.
 
-        -Estado: Validado. El modelo funciona en el hardware objetivo, aunque con limitaciones.
+- Estado: Validado. El modelo funciona en el hardware objetivo, aunque con limitaciones.
 
 ###    Supuesto de Adecuación al Uso:
 
-        -Supuesto: Se creyó que las capacidades del modelo Tiny, aunque limitadas, serían suficientes para el scope funcional del proyecto (por ejemplo, generar respuestas cortas, resúmenes básicos o clasificaciones simples).
+- Supuesto: Se creyó que las capacidades del modelo Tiny, aunque limitadas, serían suficientes para el scope funcional del proyecto (por ejemplo, generar respuestas cortas, resúmenes básicos o clasificaciones simples).
 
-        -Estado: Invalidado. La experiencia práctica demostró que el modelo es "poco eficiente con limitaciones técnicas en cuanto a prompt y respuestas, por lo que no es recomendable para proyectos serios". Este es un aprendizaje clave.
+- Estado: Invalidado. La experiencia práctica demostró que el modelo es "poco eficiente con limitaciones técnicas en cuanto a prompt y respuestas, por lo que no es recomendable para proyectos serios". Este es un aprendizaje clave.
 
 ### Supuesto sobre el Patrón de Búsqueda de los Usuarios:
 
-    -Supuesto: Se partió de la base de que los usuarios realizarían búsquedas utilizando palabras clave exactas y específicas presentes en los documentos, en lugar de búsquedas conceptuales o por similitud semántica.
+- Supuesto: Se partió de la base de que los usuarios realizarían búsquedas utilizando palabras clave exactas y específicas presentes en los documentos, en lugar de búsquedas conceptuales o por similitud semántica.
 
-    -Estado: Por validar. La efectividad de este enfoque se confirmará o refutará con el feedback real de los usuarios finales.
+- Estado: Por validar. La efectividad de este enfoque se confirmará o refutará con el feedback real de los usuarios finales.
 
 ## 🚀 Tiempo de desarrollo
 

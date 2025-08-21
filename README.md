@@ -43,6 +43,9 @@ cd PruebaDynecron
 
 2. Ejecuta el Sistema Completo:
 ```bash
+# Construir las imágenes
+docker-compose build
+# Levanta el proyecto
 docker-compose up
 ```
 
